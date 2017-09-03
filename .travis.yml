@@ -1,0 +1,23 @@
+sudo: false
+language: python
+
+python:
+    - 3.3
+    - 3.4
+    - 3.5
+    - 3.6
+
+matrix:
+  fast_finish: true
+
+install:
+    - pip install tox
+
+script:
+    - tox -e py
+
+cache:
+    - pip
+
+notifications:
+  email: false

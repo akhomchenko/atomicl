@@ -1,0 +1,6 @@
+-r requirements/develop.txt
+-r requirements/testing.txt
+-r requirements/benchmarking.txt
+-r requirements/packaging.txt
+
+-e .

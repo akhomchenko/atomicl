@@ -1,0 +1,14 @@
+[run]
+branch = True
+source =
+    atomicl
+plugins =
+    Cython.Coverage
+
+[paths]
+source =
+   src/atomicl
+   .tox/*/lib/python*/site-packages/atomicl
+
+[report]
+show_missing = True

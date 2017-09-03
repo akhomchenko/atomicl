@@ -1,0 +1,11 @@
+include LICENSE.txt
+include README.rst
+
+graft src/atomicl
+graft tests
+include src/atomicl/_atomic.h
+include benchmarks.py
+
+global-exclude *.pyc
+exclude src/atomicl/_cy.html
+exclude src/atomicl/*.so
