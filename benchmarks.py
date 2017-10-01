@@ -1,59 +1,177 @@
-import perf
+import functools
+
 import atomic
+import perf
+
 import atomicl._cy
 import atomicl._py
 
 
-def ctor_default(cls):
-    return cls()
+IMPLEMENTATIONS = {
+    'atomic': atomic.AtomicLong,
+    'atomicl_py': atomicl._py.AtomicLong,
+    'atomicl_cy': atomicl._cy.AtomicLong
+}
 
 
-def ctor(cls):
-    return cls(42)
+def benchmark_name(name, ctx, prefix=None, use_prefix=False):
+    if use_prefix:
+        return '%s%s' % (prefix % ctx, name)
+
+    return name
 
 
-def inc(counter):
-    counter += 1
-    return counter
+def add_cmdline_args(cmd, args):
+    if args.impl:
+        cmd.extend(['--impl', args.impl])
 
 
-def dec(counter):
-    counter -= 1
-    return counter
+def ctor_default(loops, cls):
+    range_it = range(loops)
+    t0 = perf.perf_counter()
+
+    for _ in range_it:
+        cls()
+        cls()
+        cls()
+        cls()
+        cls()
+        cls()
+        cls()
+        cls()
+        cls()
+        cls()
+        cls()
+
+    return perf.perf_counter() - t0
 
 
-def setter(counter):
-    counter.value = 42
-    return counter
+def ctor(loops, cls):
+    range_it = range(loops)
+    t0 = perf.perf_counter()
+
+    for _ in range_it:
+        cls(42)
+        cls(42)
+        cls(42)
+        cls(42)
+        cls(42)
+        cls(42)
+        cls(42)
+        cls(42)
+        cls(42)
+        cls(42)
+
+    return perf.perf_counter() - t0
 
 
-def cas(counter, expected, val):
-    return counter.compare_and_set(expected, val)
+def inc(loops, counter):
+    range_it = range(loops)
+    t0 = perf.perf_counter()
+
+    for _ in range_it:
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+
+    return perf.perf_counter() - t0
+
+
+def dec(loops, counter):
+    range_it = range(loops)
+    t0 = perf.perf_counter()
+
+    for _ in range_it:
+        counter -= 1
+        counter -= 1
+        counter -= 1
+        counter -= 1
+        counter -= 1
+        counter -= 1
+        counter -= 1
+        counter -= 1
+        counter -= 1
+        counter -= 1
+
+    return perf.perf_counter() - t0
+
+
+def setter(loops, counter):
+    range_it = range(loops)
+    t0 = perf.perf_counter()
+
+    for _ in range_it:
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+        counter.value = 42
+
+    return perf.perf_counter() - t0
+
+
+def cas(loops, counter, first, second):
+    range_it = range(loops)
+    t0 = perf.perf_counter()
+
+    for _ in range_it:
+        counter.compare_and_set(first, second)
+        counter.compare_and_set(second, first)
+        counter.compare_and_set(first, second)
+        counter.compare_and_set(second, first)
+        counter.compare_and_set(first, second)
+        counter.compare_and_set(second, first)
+        counter.compare_and_set(first, second)
+        counter.compare_and_set(second, first)
+        counter.compare_and_set(first, second)
+        counter.compare_and_set(second, first)
+
+    return perf.perf_counter() - t0
 
 
 if __name__ == '__main__':
-    runner = perf.Runner()
+    runner = perf.Runner(add_cmdline_args=add_cmdline_args)
 
-    runner.bench_func('atomic#ctor_default', ctor_default, atomic.AtomicLong)
-    runner.bench_func('atomicl.py#ctor_default', ctor_default, atomicl._py.AtomicLong)  # noqa: E501
-    runner.bench_func('atomicl.cy#ctor_default', ctor_default, atomicl._cy.AtomicLong)  # noqa: E501
+    parser = runner.argparser
+    parser.add_argument('--impl', choices=sorted(IMPLEMENTATIONS),
+                        help='specific implementation to benchmark')
 
-    runner.bench_func('atomic#ctor', ctor, atomic.AtomicLong)
-    runner.bench_func('atomicl.py#ctor', ctor, atomicl._py.AtomicLong)
-    runner.bench_func('atomicl.cy#ctor', ctor, atomicl._cy.AtomicLong)
+    options = parser.parse_args()
+    implementations = (options.impl,) if options.impl else IMPLEMENTATIONS
 
-    runner.bench_func('atomic#increment', inc, atomic.AtomicLong())
-    runner.bench_func('atomicl.py#increment', inc, atomicl._py.AtomicLong())
-    runner.bench_func('atomicl.cy#increment', inc, atomicl._cy.AtomicLong())
+    for impl in implementations:
+        impl = IMPLEMENTATIONS[impl]
+        name = functools.partial(benchmark_name, ctx=dict(impl=impl),
+                                 prefix='(impl = %(impl)s) ',
+                                 use_prefix=len(implementations) > 1)
 
-    runner.bench_func('atomic#decrement', dec, atomic.AtomicLong())
-    runner.bench_func('atomicl.py#decrement', dec, atomicl._py.AtomicLong())
-    runner.bench_func('atomicl.cy#decrement', dec, atomicl._cy.AtomicLong())
-
-    runner.bench_func('atomic#setter', setter, atomic.AtomicLong())
-    runner.bench_func('atomicl.py#setter', setter, atomicl._py.AtomicLong())
-    runner.bench_func('atomicl.cy#setter', setter, atomicl._cy.AtomicLong())
-
-    runner.bench_func('atomic#cas', cas, atomic.AtomicLong(0), 0, 42)
-    runner.bench_func('atomicl.py#cas', cas, atomicl._py.AtomicLong(0), 0, 42)
-    runner.bench_func('atomicl.cy#cas', cas, atomicl._cy.AtomicLong(0), 0, 42)
+        runner.bench_time_func(name('ctor_default'),
+                               ctor_default, impl,
+                               inner_loops=10)
+        runner.bench_time_func(name('ctor'),
+                               ctor, impl,
+                               inner_loops=10)
+        runner.bench_time_func(name('increment'),
+                               inc, impl(),
+                               inner_loops=10)
+        runner.bench_time_func(name('decrement'),
+                               dec, impl(),
+                               inner_loops=10)
+        runner.bench_time_func(name('setter'),
+                               setter, impl(),
+                               inner_loops=10)
+        runner.bench_time_func(name('cas'),
+                               cas, impl(0), 0, 42,
+                               inner_loops=10)
