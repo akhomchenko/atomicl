@@ -6,6 +6,14 @@ atomicl
    :target: https://travis-ci.org/gagoman/atomicl
    :alt: CI Status
 
+.. image:: https://img.shields.io/pypi/v/atomicl.svg
+    :target: https://pypi.org/project/atomicl/#history
+    :alt: Latest released version
+
+.. image:: https://img.shields.io/pypi/pyversions/atomicl.svg
+    :target: https://pypi.org/project/atomicl
+    :alt: Supported Python versions
+
 Yet another implementation of AtomicLong class.
 
 Introduction
