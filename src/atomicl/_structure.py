@@ -51,6 +51,7 @@ class AtomicLong(ABC):
         :rtype: int
         """
 
+    @abc.abstractmethod
     def compare_and_set(self, expected_value, new_value):
         """
         Atomically sets to the given value if the current value is
