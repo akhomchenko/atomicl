@@ -1,26 +1,81 @@
-sudo: false
 language: python
+cache: pip
 
-python:
-    - 3.4
-    - 3.5
-    - 3.6
+_helpers:
+  - &mainstream-python '3.6'
+
+  - &linux-py37
+    python: '3.7'
+    os: linux
+    dist: xenial
+    sudo: required
+
+  - &packaging-base
+    stage: package
+    install: $PIP install cibuildwheel==0.10.0
+    script: cibuildwheel --output-dir dist
+
+  - &packaging-env
+    CIBW_SKIP: "'cp27-* cp33-*'"
+    CIBW_BEFORE_BUILD: "'pip install -r dev-requirements.txt'"
+
+  - &upload-to-pypi
+    deploy:
+      provider: pypi
+      user: gagoman
+      password: $PYPI_PASSWORD
+      skip_cleanup: true
+      skip_existing: true
+    # extra safety measure
+      on:
+        tags: true
+        branch: master
 
 matrix:
   fast_finish: true
+
   include:
-    - python: 3.7
-      dist: xenial
-      sudo: required
+    - python: '3.4'
+      env: TOXENV=py34
+    - python: '3.5'
+      env: TOXENV=py35
+    - python: '3.6'
+      env: TOXENV=py36
+    - <<: *linux-py37
+      env: TOXENV=py37
 
-install:
-    - pip install tox
+      # meta
+    - name: 'style'
+      python: *mainstream-python
+      env: TOXENV=style
 
-script:
-    - tox -e py
+      # distribution
+    - name: 'linux wheels'
+      <<: *linux-py37
+      <<: *packaging-base
+      <<: *upload-to-pypi
+      services:
+        - docker
+      env:
+        <<: *packaging-env
+        PIP: pip
 
-cache:
-    - pip
+    - name: 'osx wheels'
+      language: generic
+      os: osx
+      <<: *packaging-base
+      <<: *upload-to-pypi
+      env:
+        <<: *packaging-env
+        PIP: pip2
+
+install: pip install tox
+script: tox
+
+stages:
+  - name: test
+  - name: package
+    if: tag IS present AND branch = master
 
 notifications:
   email: false
