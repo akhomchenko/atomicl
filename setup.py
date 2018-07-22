@@ -60,7 +60,7 @@ args = dict(
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    python_requires='~=3.3',
+    python_requires='~=3.4',
     ext_modules=extensions,
     cmdclass=dict(build_ext=ve_build_ext),
     classifiers=[
@@ -71,7 +71,6 @@ args = dict(
         'License :: OSI Approved :: MIT License',
 
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6'
