@@ -4,6 +4,7 @@ Changelog
 ## [Unreleased]
 ## Added
 - option to run benchmarks for specific implementation
+- wheels for linux and osx
 
 ### Fixed
 - benchmarks to display more accurate results

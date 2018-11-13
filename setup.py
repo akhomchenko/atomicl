@@ -48,7 +48,7 @@ class ve_build_ext(build_ext):
 
 args = dict(
     name='atomicl',
-    version='0.1.1.dev',
+    version='0.1.2.dev',
     keywords='atomiclong',
     description='Yet another implementation of AtomicLong',
     long_description=open('README.rst').read(),
