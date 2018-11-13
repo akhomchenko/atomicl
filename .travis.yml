@@ -26,10 +26,9 @@ _helpers:
       password: $PYPI_PASSWORD
       skip_cleanup: true
       skip_existing: true
-    # extra safety measure
       on:
         tags: true
-        branch: master
+        all_branches: true
 
 matrix:
   fast_finish: true
@@ -75,7 +74,7 @@ script: tox
 stages:
   - name: test
   - name: package
-    if: tag IS present AND branch = master
+    if: tag IS present
 
 notifications:
   email: false
