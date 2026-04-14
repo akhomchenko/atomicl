@@ -22,7 +22,7 @@ Introduction
 Class that allows to update long value atomically.
 Highly inspired by Java's AtomicLong_ class and atomic_ package.
 The most of performance is gained by using Cython_ with the
-pure Python fallback available *(you do not want to use it)*.
+pure Python fallback available.
 
 Examples::
 
@@ -50,9 +50,18 @@ Bootstrap a development environment::
 
     uv sync
 
+The documented local workflow assumes the default ``dev`` group is
+installed via ``uv sync`` before running lint, tests, benchmarks, or
+packaging commands from a checkout, so Cython is available there when
+needed.
+
 Run the test suite on the default interpreter::
 
     uv run pytest
+
+Run lint::
+
+    uv run flake8
 
 Run the test suite on a specific supported interpreter::
 
@@ -91,7 +100,6 @@ When Cython is available in the build environment, the build uses
 compiling the extension.
 
 When Cython is not available, the build falls back to ``src/atomicl/_cy.c``.
-
 If the extension build fails, installation falls back to the pure Python
 implementation.
 

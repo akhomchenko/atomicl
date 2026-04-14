@@ -1,7 +1,7 @@
 import functools
 
 import atomic
-import perf
+import pyperf as perf
 
 import atomicl._cy
 import atomicl._py
