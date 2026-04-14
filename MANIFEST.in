@@ -4,7 +4,6 @@ include CHANGELOG.md
 
 graft src/atomicl
 graft tests
-include src/atomicl/_atomic.h
 include benchmarks.py
 
 global-exclude *.pyc

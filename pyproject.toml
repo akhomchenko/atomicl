@@ -1,0 +1,70 @@
+[build-system]
+requires = [
+    "setuptools>=80",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atomicl"
+version = "0.1.2.dev0"
+description = "Yet another implementation of AtomicLong"
+readme = { file = "README.rst", content-type = "text/x-rst" }
+authors = [
+    { name = "Oleksii Khomchenko", email = "akhomchenko@gmail.com" },
+]
+license = "MIT"
+license-files = ["LICENSE.txt"]
+keywords = ["atomiclong"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+requires-python = ">=3.11,<3.15"
+
+[project.urls]
+Homepage = "https://github.com/akhomchenko/atomicl"
+Repository = "https://github.com/akhomchenko/atomicl"
+Changelog = "https://github.com/akhomchenko/atomicl/blob/master/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2",
+    "coverage>=7.8",
+    "Cython>=3.1",
+    "flake8>=7.2",
+    "pytest>=8.3",
+    "pytest-timeout>=2.4",
+]
+test = [
+    "Cython>=3.1",
+    "coverage>=7.8",
+    "pytest>=8.3",
+    "pytest-timeout>=2.4",
+]
+benchmark = [
+    "atomic",
+    "pyperf",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+timeout = 300
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+default-groups = ["dev"]
