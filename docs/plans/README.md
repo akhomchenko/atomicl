@@ -21,6 +21,8 @@ If the human explicitly mentions a ticket or wants ticket-based naming, include 
 
 Each feature `PLAN.md` is a live document.
 
+- The first commit for a feature should add its `PLAN.md`.
+- Subsequent implementation commits should be atomic and each should update the same `PLAN.md` to reflect the slice of work completed in that commit.
 - Agents should update `Tasks` and `Notes / Findings` while executing work.
 - `Goal` and `Exit Criteria` are human-owned sections.
 - Agents must not rewrite `Goal` or `Exit Criteria` without human approval.

@@ -28,7 +28,7 @@ Migrate the project from the legacy setuptools/tox/requirements workflow to PEP 
 ## Tasks
 
 - [x] Create the live feature plan and use it as the execution tracker.
-- [ ] Document the repo rule that a feature starts with `PLAN.md` and that later atomic commits must update it.
+- [x] Document the repo rule that a feature starts with `PLAN.md` and that later atomic commits must update it.
 - [ ] Add `pyproject.toml` and migrate project metadata/tooling configuration.
 - [ ] Keep the optional Cython extension build working with setuptools.
 - [ ] Remove legacy config and dependency files (`tox`, requirements files, old setuptools metadata).
@@ -40,3 +40,4 @@ Migrate the project from the legacy setuptools/tox/requirements workflow to PEP 
 ## Notes / Findings
 
 - The upstream repository now tracks planning guidance in `AGENTS.md` and `docs/plans/README.md`; live work belongs under `docs/plans/<feature>/PLAN.md`.
+- Repo guidance was tightened to require `PLAN.md` as the first feature commit and to require each later atomic commit to update the same live plan.
