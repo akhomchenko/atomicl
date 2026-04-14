@@ -1,3 +1,0 @@
-tox
-Cython
-flake8

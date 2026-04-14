@@ -8,7 +8,7 @@ plugins =
 [paths]
 source =
    src/atomicl
-   .tox/*/lib/python*/site-packages/atomicl
+   .venv/lib/python*/site-packages/atomicl
 
 [report]
 show_missing = True

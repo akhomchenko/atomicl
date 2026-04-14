@@ -5,15 +5,35 @@ import threading
 import pytest
 
 from atomicl import _py
-from atomicl import _cy
+
+try:
+    from atomicl import _cy
+except ImportError:
+    _cy = None
 
 
 _missing = object()
 
 
-@pytest.fixture(params=[_py.AtomicLong, _cy.AtomicLong])
+IMPLEMENTATIONS = [_py.AtomicLong]
+
+if _cy is not None:
+    IMPLEMENTATIONS.append(_cy.AtomicLong)
+
+
+@pytest.fixture(params=IMPLEMENTATIONS)
 def impl(request):
     return request.param
+
+
+def test_public_api_uses_best_available_backend():
+    import atomicl
+
+    if _cy is None:
+        assert atomicl.AtomicLong is _py.AtomicLong
+        return
+
+    assert atomicl.AtomicLong is _cy.AtomicLong
 
 
 @pytest.mark.parametrize('initial, expected', [
@@ -178,8 +198,6 @@ def test_raises_if_new_value_for_cas_if_not_a_long(impl, val, msg):
 ])
 def test_concurrently(impl, op, loops, val, expected):
     def worker():
-        nonlocal counter, event
-
         method = getattr(counter, op)
 
         event.wait()

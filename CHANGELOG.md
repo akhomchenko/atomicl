@@ -3,6 +3,14 @@ Changelog
 
 ## [Unreleased]
 
+### Changed
+- modernized packaging and development workflow to `pyproject.toml` and `uv`
+- updated supported CPython versions to `3.11` through `3.14`
+- removed `tox` from the local workflow
+
+### Fixed
+- preserved optional native-extension fallback behavior across Cython, generated C, and pure-Python paths
+
 ## [0.1.1] - 2018-11-13
 ## Added
 - option to run benchmarks for specific implementation

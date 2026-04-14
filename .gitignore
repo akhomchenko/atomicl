@@ -1,5 +1,4 @@
-venv*
-.tox
+.venv
 
 .idea
 .DS_Store
@@ -18,5 +17,3 @@ htmlcov
 
 src/atomicl/_cy.c
 src/atomicl/_cy.html
-
-.python-version
