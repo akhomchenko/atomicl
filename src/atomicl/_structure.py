@@ -1,9 +1,7 @@
 import abc
 
-from atomicl._compat import ABC
 
-
-class AtomicLong(ABC):
+class AtomicLong(abc.ABC):
     @property
     @abc.abstractmethod
     def value(self):

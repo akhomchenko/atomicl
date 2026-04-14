@@ -1,9 +1,7 @@
 try:
-    from atomicl import _cy
-    AtomicLong = _cy.AtomicLong
+    from ._cy import AtomicLong
 except ImportError:
-    from atomicl import _py
-    AtomicLong = _py.AtomicLong
+    from ._py import AtomicLong
 
 
 __all__ = ['AtomicLong']
