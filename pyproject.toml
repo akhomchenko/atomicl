@@ -42,7 +42,6 @@ dev = [
     "pytest-timeout>=2.4",
 ]
 test = [
-    "Cython>=3.1",
     "coverage>=7.8",
     "pytest>=8.3",
     "pytest-timeout>=2.4",
@@ -68,3 +67,6 @@ where = ["src"]
 
 [tool.uv]
 default-groups = ["dev"]
+
+[tool.uv.extra-build-dependencies]
+atomicl = ["Cython>=3.1"]
