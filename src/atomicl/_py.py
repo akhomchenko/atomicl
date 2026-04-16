@@ -2,8 +2,7 @@ import threading
 
 from atomicl import _structure
 
-
-__all__ = ['AtomicLong']
+__all__ = ["AtomicLong"]
 
 
 def raise_on_not_long(msg_format, val):
@@ -12,7 +11,7 @@ def raise_on_not_long(msg_format, val):
 
 
 class AtomicLong(_structure.AtomicLong):
-    __slots__ = ('_lock', '_value')
+    __slots__ = ("_lock", "_value")
 
     def __init__(self, initial_value=0):
         raise_on_not_long('initial value "%s" is not a long', initial_value)
@@ -71,5 +70,6 @@ class AtomicLong(_structure.AtomicLong):
             return current
 
     def __repr__(self):
-        return '<{0} at 0x{1}: {2!r}>'.format(
-            self.__class__.__name__, id(self), self._value)
+        return "<{0} at 0x{1}: {2!r}>".format(
+            self.__class__.__name__, id(self), self._value
+        )

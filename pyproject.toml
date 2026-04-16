@@ -54,6 +54,9 @@ benchmark = [
 [tool.ruff.lint]
 extend-select = ["I"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["atomicl"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 timeout = 300

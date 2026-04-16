@@ -1,6 +1,6 @@
 # Ruff Migration
 
-Status: in_progress
+Status: done
 
 ## Goal
 
@@ -35,8 +35,8 @@ keeping the package runtime behavior and public API unchanged.
 - [x] Create the live feature plan and use it as the execution tracker.
 - [x] Replace Flake8 with Ruff in development dependencies and configuration.
 - [x] Update the local workflow and CI documentation to use Ruff.
-- [ ] Apply Ruff fixes, import sorting, and formatting to tracked Python files.
-- [ ] Validate Ruff, tests, and build commands from the migrated workflow.
+- [x] Apply Ruff fixes, import sorting, and formatting to tracked Python files.
+- [x] Validate Ruff, tests, and build commands from the migrated workflow.
 
 ## Notes / Findings
 
@@ -48,3 +48,8 @@ keeping the package runtime behavior and public API unchanged.
   formatter does not subsume linting.
 - The repo can rely on Ruff's default current-directory discovery, so the
   documented commands omit an explicit `.` path.
+- Ruff's first-party detection does not infer modules implemented only as
+  `.pyx` files, so `atomicl` needs an explicit `known-first-party` override to
+  keep `atomicl._cy` grouped with `atomicl._py`.
+- Final validation after the Ruff rewrite pass succeeded with `uv run ruff
+  check`, `uv run ruff format --check`, `uv run pytest`, and `uv build`.

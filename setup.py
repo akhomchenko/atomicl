@@ -1,31 +1,31 @@
-from setuptools import setup
-from setuptools import Extension
 from distutils.command.build_ext import build_ext
-from distutils.errors import CCompilerError
-from distutils.errors import DistutilsExecError
-from distutils.errors import DistutilsPlatformError
+from distutils.errors import CCompilerError, DistutilsExecError, DistutilsPlatformError
+
+from setuptools import Extension, setup
 
 try:
     from Cython.Build import cythonize
+
     USE_CYTHON = True
 except ImportError:
     USE_CYTHON = False
 
 
-ext = '.pyx' if USE_CYTHON else '.c'
+ext = ".pyx" if USE_CYTHON else ".c"
 
 extensions = [
-    Extension('atomicl._cy', sources=[
-        'src/atomicl/_cy' + ext,
-        'src/atomicl/_atomic.c'
-    ], include_dirs=['src/atomicl/'])
+    Extension(
+        "atomicl._cy",
+        sources=["src/atomicl/_cy" + ext, "src/atomicl/_atomic.c"],
+        include_dirs=["src/atomicl/"],
+    )
 ]
 
 if USE_CYTHON:
     extensions = cythonize(
         extensions,
         annotate=True,
-        compiler_directives={'language_level': '3'},
+        compiler_directives={"language_level": "3"},
     )
 
 
@@ -43,8 +43,7 @@ class ve_build_ext(build_ext):
     def build_extension(self, ext):
         try:
             build_ext.build_extension(self, ext)
-        except (CCompilerError, DistutilsExecError,
-                DistutilsPlatformError, ValueError):
+        except (CCompilerError, DistutilsExecError, DistutilsPlatformError, ValueError):
             raise BuildFailed()
 
 
@@ -61,6 +60,6 @@ except BuildFailed:
     print("************************************************************")
     print("Cannot compile C accelerator module, use pure python version")
     print("************************************************************")
-    del args['ext_modules']
-    del args['cmdclass']
+    del args["ext_modules"]
+    del args["cmdclass"]
     setup(**args)
