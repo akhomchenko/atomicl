@@ -59,9 +59,17 @@ Run the test suite on the default interpreter::
 
     uv run pytest
 
-Run lint::
+Check lint::
 
-    uv run flake8
+    uv run ruff check
+
+Apply lint fixes and import sorting::
+
+    uv run ruff check --fix
+
+Format code::
+
+    uv run ruff format
 
 Run the test suite on a specific supported interpreter::
 

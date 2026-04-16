@@ -33,8 +33,8 @@ keeping the package runtime behavior and public API unchanged.
 ## Tasks
 
 - [x] Create the live feature plan and use it as the execution tracker.
-- [ ] Replace Flake8 with Ruff in development dependencies and configuration.
-- [ ] Update the local workflow and CI documentation to use Ruff.
+- [x] Replace Flake8 with Ruff in development dependencies and configuration.
+- [x] Update the local workflow and CI documentation to use Ruff.
 - [ ] Apply Ruff fixes, import sorting, and formatting to tracked Python files.
 - [ ] Validate Ruff, tests, and build commands from the migrated workflow.
 
@@ -46,3 +46,5 @@ keeping the package runtime behavior and public API unchanged.
   setting an explicit line length.
 - `ruff check` and `ruff format --check` are both required in CI because the
   formatter does not subsume linting.
+- The repo can rely on Ruff's default current-directory discovery, so the
+  documented commands omit an explicit `.` path.
