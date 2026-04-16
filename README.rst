@@ -53,7 +53,7 @@ Bootstrap a development environment::
 The documented local workflow assumes the default ``dev`` group is
 installed via ``uv sync`` before running lint, tests, benchmarks, or
 packaging commands from a checkout, so Cython is available there when
-needed.
+needed for Cython-backed packaging workflows.
 
 Run the test suite on the default interpreter::
 
@@ -82,6 +82,11 @@ Run a faster local benchmark pass for one implementation::
 
     uv run --group benchmark python benchmarks.py --fast --impl atomicl_cy
 
+Regenerate ``src/atomicl/_cy.c`` after editing ``src/atomicl/_cy.pyx``::
+
+    uv sync
+    uv build
+
 Build Behavior
 --------------
 
@@ -95,7 +100,7 @@ Source distributions ship generated C code for the extension, so end
 systems installing from the released sdist do not need Cython just to
 build the package.
 
-When Cython is available in the build environment, the build uses
+When packaging from a checkout with uv_, the local build uses
 ``src/atomicl/_cy.pyx`` and regenerates ``src/atomicl/_cy.c`` before
 compiling the extension.
 
