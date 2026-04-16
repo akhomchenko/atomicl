@@ -2,8 +2,8 @@
 atomicl
 =======
 
-.. image:: https://travis-ci.org/akhomchenko/atomicl.svg?branch=master
-   :target: https://travis-ci.org/akhomchenko/atomicl
+.. image:: https://github.com/akhomchenko/atomicl/actions/workflows/ci.yml/badge.svg?branch=master
+   :target: https://github.com/akhomchenko/atomicl/actions/workflows/ci.yml
    :alt: CI Status
 
 .. image:: https://img.shields.io/pypi/v/atomicl.svg
