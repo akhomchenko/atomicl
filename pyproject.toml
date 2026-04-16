@@ -37,9 +37,9 @@ dev = [
     "build>=1.2.2",
     "coverage>=7.8",
     "Cython>=3.1",
-    "flake8>=7.2",
     "pytest>=8.3",
     "pytest-timeout>=2.4",
+    "ruff>=0.15.9",
 ]
 test = [
     "coverage>=7.8",
@@ -50,6 +50,12 @@ benchmark = [
     "atomic",
     "pyperf",
 ]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["atomicl"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

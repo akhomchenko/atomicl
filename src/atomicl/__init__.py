@@ -4,4 +4,4 @@ except ImportError:
     from ._py import AtomicLong
 
 
-__all__ = ['AtomicLong']
+__all__ = ["AtomicLong"]
