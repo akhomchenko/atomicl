@@ -31,10 +31,12 @@ jobs:
         run: uv run ruff format --check
 
   tests:
-    runs-on: ubuntu-latest
+    name: tests (${{ matrix.os }}, py${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
@@ -48,7 +50,14 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
 
-      - name: Install dependencies
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        env:
+          ATOMICL_NO_EXTENSIONS: "1"
+        run: uv sync
+
+      - name: Install dependencies (POSIX)
+        if: runner.os != 'Windows'
         run: uv sync
 
       - name: Run tests
