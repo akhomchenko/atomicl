@@ -104,6 +104,11 @@ extension cannot be compiled.
 
 Building the native extension requires a working C compiler toolchain.
 
+To force a pure Python install from source and skip native-extension
+configuration entirely, set ``ATOMICL_NO_EXTENSIONS=1`` when installing::
+
+    ATOMICL_NO_EXTENSIONS=1 pip install atomicl
+
 Source distributions ship generated C code for the extension, so end
 systems installing from the released sdist do not need Cython just to
 build the package.
@@ -111,6 +116,9 @@ build the package.
 When packaging from a checkout with uv_, the local build uses
 ``src/atomicl/_cy.pyx`` and regenerates ``src/atomicl/_cy.c`` before
 compiling the extension.
+
+When ``ATOMICL_NO_EXTENSIONS=1`` is set, packaging skips configuring the
+extension and installs the pure Python implementation directly.
 
 When Cython is not available, the build falls back to ``src/atomicl/_cy.c``.
 If the extension build fails, installation falls back to the pure Python

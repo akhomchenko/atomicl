@@ -8,6 +8,7 @@ Changelog
 - updated supported CPython versions to `3.11` through `3.14`
 - removed `tox` from the local workflow
 - migrated CI from Travis CI to GitHub Actions
+- added `ATOMICL_NO_EXTENSIONS=1` as an opt-out for compiling the optional native extension
 
 ### Fixed
 - preserved optional native-extension fallback behavior across Cython, generated C, and pure-Python paths
