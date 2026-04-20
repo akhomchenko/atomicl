@@ -99,8 +99,8 @@ Build Behavior
 --------------
 
 The package keeps an optional Cython-backed extension for the fast path
-and retains the pure Python fallback for environments where the native
-extension cannot be compiled.
+and retains a pure Python implementation for environments where the
+native extension is not installed.
 
 Building the native extension requires a working C compiler toolchain.
 
@@ -121,8 +121,8 @@ When ``ATOMICL_NO_EXTENSIONS=1`` is set, packaging skips configuring the
 extension and installs the pure Python implementation directly.
 
 When Cython is not available, the build falls back to ``src/atomicl/_cy.c``.
-If the extension build fails, installation falls back to the pure Python
-implementation.
+If the extension build fails, installation fails; set
+``ATOMICL_NO_EXTENSIONS=1`` to force a pure Python install.
 
 Differences from atomic_
 ------------------------
