@@ -31,13 +31,12 @@ with MSVC's experimental C11 atomics support.
 ## Tasks
 
 - [x] Create the live feature plan and use it as the execution tracker.
-- [ ] Migrate the C implementation to `<stdatomic.h>` with equivalent
+- [x] Migrate the C implementation to `<stdatomic.h>` with equivalent
   sequentially consistent semantics.
-- [ ] Update build configuration to request C11 mode, including the Windows
+- [x] Update build configuration to request C11 mode, including the Windows
   experiment flags.
-- [ ] Validate lint/tests locally on the current toolchain.
-- [ ] Update CI to attempt the native extension build on Windows and record the
-  result.
+- [x] Validate lint/tests locally on the current toolchain.
+- [ ] Update CI to build and test the native extension on Windows.
 
 ## Notes / Findings
 
@@ -46,3 +45,16 @@ with MSVC's experimental C11 atomics support.
   job family.
 - The native API only needs fetch-add, fetch-sub, exchange, and compare-exchange,
   all of which have direct C11 `<stdatomic.h>` equivalents.
+- `uv sync` showed that Cython 3.2.4 does not compile cleanly when an extension
+  attribute itself is declared as `_Atomic long long`; its generated Python-int
+  conversion helpers still treat the type as an arithmetic scalar.
+- The safe migration path is to keep `_Atomic long long` hidden inside a C
+  wrapper struct, so Cython holds a plain opaque native struct while the helper
+  layer owns the actual atomic field and operations.
+- Local validation passed with `uv sync`, `uv run ruff check`, and
+  `uv run pytest -q`.
+- Build flag selection needs to follow the active compiler, not just the OS:
+  MSVC needs `/std:c11` together with `/experimental:c11atomics`, while
+  Unix-style compilers use `-std=c11`.
+- Local validation passed with the corrected Windows flag selection; CI
+  revalidation is pending on the current PR head.

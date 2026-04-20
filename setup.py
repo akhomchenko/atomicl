@@ -27,12 +27,26 @@ BUILD_FAILURE_HINT = (
     "Set ATOMICL_NO_EXTENSIONS=1 to force a pure-Python install."
 )
 
+C11_UNIX_FLAGS = ["-std=c11"]
+C11_MSVC_FLAGS = ["/std:c11", "/experimental:c11atomics"]
+
 
 class BuildFailed(Exception):
     pass
 
 
 class ve_build_ext(build_ext):
+    def build_extensions(self):
+        if self.compiler.compiler_type == "msvc":
+            cflags = C11_MSVC_FLAGS
+        else:
+            cflags = C11_UNIX_FLAGS
+
+        for ext in self.extensions:
+            ext.extra_compile_args = list(cflags)
+
+        build_ext.build_extensions(self)
+
     def run(self):
         try:
             build_ext.run(self)

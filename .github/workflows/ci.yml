@@ -50,14 +50,7 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
 
-      - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
-        env:
-          ATOMICL_NO_EXTENSIONS: "1"
-        run: uv sync
-
-      - name: Install dependencies (POSIX)
-        if: runner.os != 'Windows'
+      - name: Install dependencies
         run: uv sync
 
       - name: Run tests
