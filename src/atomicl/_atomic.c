@@ -1,15 +1,29 @@
-long long get_and_add(long long* ptr, long long val) {
-    return __atomic_fetch_add(ptr, val, __ATOMIC_SEQ_CST);
+#include "_atomic.h"
+
+void init_atomic_long_long(atomic_long_long* ptr, long long val) {
+    atomic_init(&ptr->value, val);
 }
 
-long long get_and_sub(long long* ptr, long long val) {
-    return __atomic_fetch_sub(ptr, val, __ATOMIC_SEQ_CST);
+long long load_value(atomic_long_long* ptr) {
+    return atomic_load(&ptr->value);
 }
 
-long long get_and_set(long long* ptr, long long val) {
-    return __atomic_exchange_n(ptr, val, __ATOMIC_SEQ_CST);
+void store_value(atomic_long_long* ptr, long long val) {
+    atomic_store(&ptr->value, val);
 }
 
-int compare_and_set(long long* ptr, long long exp, long long val) {
-    return __atomic_compare_exchange_n(ptr, &exp, val, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
+long long get_and_add(atomic_long_long* ptr, long long val) {
+    return atomic_fetch_add(&ptr->value, val);
+}
+
+long long get_and_sub(atomic_long_long* ptr, long long val) {
+    return atomic_fetch_sub(&ptr->value, val);
+}
+
+long long get_and_set(atomic_long_long* ptr, long long val) {
+    return atomic_exchange(&ptr->value, val);
+}
+
+int compare_and_set(atomic_long_long* ptr, long long exp, long long val) {
+    return atomic_compare_exchange_strong(&ptr->value, &exp, val);
 }

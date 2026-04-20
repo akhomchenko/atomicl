@@ -9,6 +9,9 @@ Changelog
 - removed `tox` from the local workflow
 - migrated CI from Travis CI to GitHub Actions
 - added `ATOMICL_NO_EXTENSIONS=1` as an opt-out for compiling the optional native extension
+- migrated the native atomic implementation from compiler-specific `__atomic_*` builtins to C11 `<stdatomic.h>`
+- updated native extension build flags to request C11 atomics for both POSIX toolchains and MSVC
+- updated Windows CI to build and test the native extension path instead of forcing the pure-Python fallback
 
 ### Fixed
 - preserved optional native-extension fallback behavior across Cython, generated C, and pure-Python paths
