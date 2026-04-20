@@ -22,7 +22,13 @@ extensions = [
 ]
 
 
-class BuildFailed(BaseException):
+BUILD_FAILURE_HINT = (
+    "Failed to build the optional native extension. "
+    "Set ATOMICL_NO_EXTENSIONS=1 to force a pure-Python install."
+)
+
+
+class BuildFailed(Exception):
     pass
 
 
@@ -30,14 +36,19 @@ class ve_build_ext(build_ext):
     def run(self):
         try:
             build_ext.run(self)
-        except (DistutilsPlatformError, FileNotFoundError):
-            raise BuildFailed()
+        except (DistutilsPlatformError, FileNotFoundError) as exc:
+            raise BuildFailed(BUILD_FAILURE_HINT) from exc
 
     def build_extension(self, ext):
         try:
             build_ext.build_extension(self, ext)
-        except (CCompilerError, DistutilsExecError, DistutilsPlatformError, ValueError):
-            raise BuildFailed()
+        except (
+            CCompilerError,
+            DistutilsExecError,
+            DistutilsPlatformError,
+            ValueError,
+        ) as exc:
+            raise BuildFailed(BUILD_FAILURE_HINT) from exc
 
 
 NO_EXTENSIONS = bool(os.environ.get("ATOMICL_NO_EXTENSIONS"))
@@ -53,13 +64,7 @@ if not NO_EXTENSIONS:
     print("*********************")
     print("* Accelerated build *")
     print("*********************")
-    try:
-        setup(ext_modules=extensions, cmdclass=dict(build_ext=ve_build_ext))
-    except BuildFailed:
-        print("*********************")
-        print("* Pure Python build *")
-        print("*********************")
-        setup()
+    setup(ext_modules=extensions, cmdclass=dict(build_ext=ve_build_ext))
 else:
     print("*********************")
     print("* Pure Python build *")

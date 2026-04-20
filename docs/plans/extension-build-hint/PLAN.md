@@ -1,6 +1,6 @@
 # Extension Build Hint
 
-Status: proposed
+Status: done
 
 ## Goal
 
@@ -27,13 +27,19 @@ successfully or fail, and pure-Python installs only happen when
 
 ## Tasks
 
-- [ ] Create the live feature plan and use it as the execution tracker.
-- [ ] Remove the automatic pure-Python fallback from `setup.py`.
-- [ ] Add an actionable install hint for failed accelerated builds.
-- [ ] Run the existing project checks against the updated packaging behavior.
+- [x] Create the live feature plan and use it as the execution tracker.
+- [x] Remove the automatic pure-Python fallback from `setup.py`.
+- [x] Add an actionable install hint for failed accelerated builds.
+- [x] Run the existing project checks against the updated packaging behavior.
 
 ## Notes / Findings
 
 - No dedicated packaging/integration test module exists in the repository, so
   this work is expected to rely on the existing project validation commands plus
   targeted manual packaging-path checks if needed.
+- The default build path now stays accelerated-only: extension failures bubble
+  out as a hard error with an explicit `ATOMICL_NO_EXTENSIONS=1` hint instead of
+  retrying `setup()` in pure-Python mode.
+- A targeted `/tmp` packaging check with an intentionally broken `_atomic.c`
+  confirmed the new hard failure message and the explicit
+  `ATOMICL_NO_EXTENSIONS=1` pure-Python path.
