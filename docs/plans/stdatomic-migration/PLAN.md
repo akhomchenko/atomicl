@@ -1,6 +1,6 @@
 # C11 Stdatomic Migration
 
-Status: in_progress
+Status: done
 
 ## Goal
 
@@ -36,7 +36,7 @@ with MSVC's experimental C11 atomics support.
 - [x] Update build configuration to request C11 mode, including the Windows
   experiment flags.
 - [x] Validate lint/tests locally on the current toolchain.
-- [ ] Update CI to build and test the native extension on Windows.
+- [x] Update CI to build and test the native extension on Windows.
 
 ## Notes / Findings
 
@@ -56,5 +56,5 @@ with MSVC's experimental C11 atomics support.
 - Build flag selection needs to follow the active compiler, not just the OS:
   MSVC needs `/std:c11` together with `/experimental:c11atomics`, while
   Unix-style compilers use `-std=c11`.
-- Local validation passed with the corrected Windows flag selection; CI
-  revalidation is pending on the current PR head.
+- GitHub Actions validates native Windows extension builds successfully on the
+  current PR head for `windows-latest` with Python 3.11, 3.12, 3.13, and 3.14.
